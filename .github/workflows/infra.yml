@@ -3,7 +3,7 @@ name: Deploy Infra with Terraform
 on:
   push:
     branches:
-      - main
+      - pre
 
 jobs:
   terraform:
