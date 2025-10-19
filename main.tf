@@ -1,12 +1,12 @@
-provider "aws" {
-  region = "us-east-1"
-}
-
 resource "aws_s3_bucket" "my_bucket" {
-  bucket = "my-bucket-prueba-de-infra54638"
+  bucket = "my-bucket-prueba-infra-${random_id.suffix.hex}"
 
   tags = {
     Name        = "MiBucket"
     Environment = "Dev"
   }
+}
+
+resource "random_id" "suffix" {
+  byte_length = 4
 }
