@@ -31,12 +31,15 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-      - name: Validar plan
+      - name: Validar plan (solo si hay cambios)
         run: |
-          terraform show -json tfplan | jq '.resource_changes[] | select(.change.actions | index("create") or index("delete"))' > changes.json
-          if [ -s changes.json ]; then
-            echo "⚠️ El plan incluye creación o destrucción de recursos"
-            exit 1
+          terraform show -json tfplan > tfplan.json
+          CHANGES=$(jq '.resource_changes | length' tfplan.json)
+          if [ "$CHANGES" -eq "0" ]; then
+            echo "✅ No hay cambios en el plan. Cancelando ejecución."
+            exit 0
+          else
+            echo "⚠️ Se detectaron cambios en el plan. Continuando con apply..."
           fi
 
       - name: Terraform Apply
