@@ -3,7 +3,7 @@ name: Deploy Infra with Terraform
 on:
   push:
     branches:
-      - pre
+      - pre  # Usa 'main' si tu rama principal es esa
 
 jobs:
   terraform:
@@ -30,4 +30,3 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
